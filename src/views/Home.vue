@@ -1,27 +1,6 @@
 <template>
   <div>
-    <header class="header-calendar">
-      <div class="arrow-for-month arrow-prev-month" v-scroll-to="{
-          el: `#day-${+currentScrollDay.id - 30}`,
-          container: '.wrapper',
-          x: true,
-          y: false
-      }"></div>
-      <h2 class="title-month-year">
-        <span class="title-month">{{currentScrollDay.month}}</span>
-        <span class="title-year">{{currentScrollDay.year}}</span>
-      </h2>
-      <div
-        class="arrow-for-month arrow-next-month"
-        v-scroll-to="{
-          el: `#day-${+currentScrollDay.id + 30}`,
-          container: '.wrapper',
-          x: true,
-          y: false
-      }"
-      ></div>
-    </header>
-
+    <calendar-header :currentScrollDay="currentScrollDay" />
     <div class="wrapper">
       <div ref="days" class="days">
         <div
@@ -29,21 +8,22 @@
           class="day"
           v-for="day in days"
           :key="day.number + day.month+day.year"
-          :data-month="day.month"
-          :data-year="day.year"
         >
           <div class="inner-day day-name">{{day.dayOfWeek}}</div>
-          <div class="inner-day day-number">{{day.number}}</div>
+          <div class="inner-day day-number" :class="{ holiday: day.dayOfWeek == 'сб' || day.dayOfWeek == 'вс' }" >{{day.number}}</div>
         </div>
       </div>
       <div class="events">
         <div class="events-row" v-for="event in events" :key="event.id">
-          <div
-            class="event"
-            :class="{ 'event-fill': event.dates.find(date => date.day == day.number) }"
-            v-for="day in days"
+          <event-cell
+            v-for="(day, index) in days"
             :key="day.number + day.month+day.year"
-          >-</div>
+            :day="day"
+            :previousDay="days[index - 1]"
+            :nextDay="days[index + 1]"
+            :event="event"
+          ></event-cell>
+          </div>
         </div>
       </div>
     </div>
@@ -51,30 +31,37 @@
 </template>
 
 <script>
-import { events } from "../utils/constants";
+import CalendarHeader from '../components/CalendarHeader'
+import EventCell from '../components/EventCell'
+
+import { events, monthNames } from "../utils/constants";
 import { getDaysOfMonth } from "../utils/helpers";
 import { onScroll } from "../utils/derictives";
-import VueScrollTo from "vue-scrollto";
 
 export default {
   data() {
     return {
       events: events,
-      currentScrollDay: 0,
+      currentScrollDay: {},
     };
   },
   directives: {
-    scrollTo: VueScrollTo,
     onScroll
   },
+  filters: {
+
+  },
   methods: {
+    log(a,e) {
+      console.log(a, e)
+    },
     getMonthFromMiddleElement() {
       const daysElement = this.$refs.days;
       const centerX = daysElement.offsetLeft + daysElement.offsetWidth / 2;
       const centerY = daysElement.offsetTop + daysElement.offsetHeight / 2;
       const middleDayElement = document.elementFromPoint(centerX, centerY);
       //console.log("middleDayElement", middleDayElement);
-      if (middleDayElement.classList.contains("day-number")) {
+      if (middleDayElement.parentNode.classList.contains("day")) {
         const id = middleDayElement.parentNode.id.split('day-')[1]
         console.log('id', id)
         this.currentScrollDay = this.days[id]
@@ -102,49 +89,17 @@ export default {
       }
       return arrDays;
     }
+  },
+  components: {
+    CalendarHeader,
+    EventCell
   }
 };
 </script>
 
 <style lang="scss" scoped>
 .wrapper {
-  max-width: 80vw;
-  margin: 0 auto;
   overflow-x: auto;
-}
-
-.header-calendar {
-  height: 11vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.title-month {
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.title-year {
-  font-size: 18px;
-  font-weight: 400;
-}
-
-.arrow-for-month {
-  width: 11px;
-  height: 11px;
-  border-bottom: 1px solid red;
-  border-left: 1px solid red;
-}
-
-.arrow-prev-month {
-  margin-right: 100px;
-  transform: rotate(45deg);
-}
-
-.arrow-next-month {
-  margin-left: 100px;
-  transform: rotate(225deg);
 }
 
 .days {
@@ -153,8 +108,28 @@ export default {
 
   .day {
     grid-row: 1;
-    min-width: 65px;
-    margin: 0 10px;
+    min-width: 70px;
+  }
+
+  .inner-day {
+    text-align: left;
+    padding: 6px 8px;
+    border: 1px solid #e7e7e7;
+    border-top: none;
+    border-left: none;
+  }
+
+  .day-name {
+    background-color: #f4f4f4;
+    font-weight: 700;
+  }
+
+  .day-number {
+    border-bottom: none;
+  }
+
+  .holiday {
+    background-color: #f4f4f4;
   }
 }
 
@@ -163,15 +138,8 @@ export default {
     display: flex;
   }
 
-  .event {
-    margin: 10px;
-    min-width: 65px;
-    padding: 10px 0;
-    border: 1px solid #ccc;
-
-    &.event-fill {
-      background-color: greenyellow;
-    }
-  }
+  // .event-cell:not(.event-cell-fill) + .event-cell-fill {
+  //     border-radius: 15px 0 0 15px;
+  // }
 }
 </style>

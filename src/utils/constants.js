@@ -21,12 +21,14 @@ export const events = [
     name: 'Petya',
     dates: [
       {
-        day: 29,
-        month: 5,
+        day: 5,
+        month: 1,
+        year: 2018,
       },
       {
-        day: 30,
-        month: 5,
+        day: 6,
+        month: 1,
+        year: 2018,
       },
     ],
   },
@@ -36,15 +38,18 @@ export const events = [
     dates: [
       {
         day: 2,
-        month: 6,
+        month: 1,
+        year: 2018,
       },
       {
         day: 3,
-        month: 6,
+        month: 1,
+        year: 2018,
       },
       {
         day: 4,
-        month: 6,
+        month: 1,
+        year: 2018,
       },
     ],
   },
