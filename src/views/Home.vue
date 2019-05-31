@@ -26,6 +26,9 @@
           </div>
         </div>
       </div>
+
+      <AddButton />
+
     </div>
   </div>
 </template>
@@ -33,6 +36,7 @@
 <script>
 import CalendarHeader from '../components/CalendarHeader'
 import EventCell from '../components/EventCell'
+import AddButton from '../components/AddButton'
 
 import { events, monthNames } from "../utils/constants";
 import { getDaysOfMonth } from "../utils/helpers";
@@ -92,7 +96,8 @@ export default {
   },
   components: {
     CalendarHeader,
-    EventCell
+    EventCell,
+    AddButton
   }
 };
 </script>
@@ -112,7 +117,6 @@ export default {
   }
 
   .inner-day {
-    text-align: left;
     padding: 6px 8px;
     border: 1px solid #e7e7e7;
     border-top: none;
@@ -142,4 +146,5 @@ export default {
   //     border-radius: 15px 0 0 15px;
   // }
 }
+
 </style>

@@ -1,13 +1,18 @@
 import Vue from 'vue';
-import App from './App.vue';
+import Vuetify from 'vuetify'
 import router from './router';
 import store from './store';
+import 'vuetify/dist/vuetify.min.css';
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import App from './App.vue';
 import './registerServiceWorker';
 
 import 'reset-css/reset.css';
 import './styles/global.scss';
 
 Vue.config.productionTip = false;
+
+Vue.use(Vuetify);
 
 new Vue({
   router,
