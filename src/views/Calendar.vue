@@ -1,16 +1,17 @@
 <template>
   <div>
-    <calendar-header :currentScrollDay="currentScrollDay" />
+    <calendar-header :dayOnCurrentScroll="dayOnCurrentScroll" />
     <div class="wrapper">
       <div ref="days" class="days">
         <div
           :id="'day-' + day.id"
           class="day"
+          :class="{ 'current-day': day.dayPositionRelativeToCurrent == 0 }"
           v-for="day in days"
           :key="day.number + day.month+day.year"
         >
           <div class="inner-day day-name">{{day.dayOfWeek}}</div>
-          <div class="inner-day day-number" :class="{ holiday: day.dayOfWeek == 'сб' || day.dayOfWeek == 'вс' }" >{{day.number}}</div>
+          <div class="inner-day day-number" :class="{ holiday: isHoliday(day) }" >{{day.number}}</div>
         </div>
       </div>
       <div class="events">
@@ -42,30 +43,22 @@ export default {
   data() {
     return {
       events: events,
-      currentScrollDay: {},
+      dayOnCurrentScroll: {},
     };
   },
-  directives: {
-    onScroll
-  },
-  filters: {
-
-  },
   methods: {
-    log(a,e) {
-      console.log(a, e)
-    },
     getMonthFromMiddleElement() {
       const daysElement = this.$refs.days;
       const centerX = daysElement.offsetLeft + daysElement.offsetWidth / 2;
       const centerY = daysElement.offsetTop + daysElement.offsetHeight / 2;
       const middleDayElement = document.elementFromPoint(centerX, centerY);
-      //console.log("middleDayElement", middleDayElement);
       if (middleDayElement.parentNode.classList.contains("day")) {
         const id = middleDayElement.parentNode.id.split('day-')[1]
-        console.log('id', id)
-        this.currentScrollDay = this.days[id]
+        this.dayOnCurrentScroll = this.days[id]
       }
+    },
+    isHoliday(day) {
+      return day.dayOfWeek === 'сб' || day.dayOfWeek === 'вс'
     }
   },
   mounted() {
@@ -73,11 +66,13 @@ export default {
     document.querySelector(".wrapper").addEventListener("scroll", () => {
       this.getMonthFromMiddleElement();
     });
+
+    document.querySelector('.wrapper').scrollLeft = document.querySelector('.current-day').offsetLeft
   },
   computed: {
     days() {
       const arrDays = [];
-      for (let yearNumber = 2018; yearNumber < 2020; yearNumber++) {
+      for (let yearNumber = 2019; yearNumber < 2020; yearNumber++) {
         for (let monthNumber = 0; monthNumber < 12; monthNumber++) {
           const date = new Date(yearNumber, monthNumber, 1);
           const year = date.getFullYear();
@@ -89,6 +84,9 @@ export default {
       }
       return arrDays;
     }
+  },
+  directives: {
+    onScroll
   },
   components: {
     CalendarHeader,
@@ -104,7 +102,6 @@ export default {
 
 .days {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
 
   .day {
     grid-row: 1;

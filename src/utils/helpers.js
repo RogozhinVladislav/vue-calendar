@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { monthNames, weekNames } from './constants';
 
 export const getDaysOfMonth = (year, month) => {
@@ -20,12 +21,14 @@ export const getDaysOfMonth = (year, month) => {
           dayOfWeek: weekNames[j],
           month: monthNames[month],
           year,
+          dayPositionRelativeToCurrent: moment([year, month, k]).diff(moment().startOf('day'), 'days'),
         });
       }
       k++;
     }
   }
+
   return table;
 };
 
-export const func = function () {};
+export const isHoliday = day => day.dayOfWeek === 'сб' || day.dayOfWeek === 'вс';

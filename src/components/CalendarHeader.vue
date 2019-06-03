@@ -3,7 +3,7 @@
     <div
       class="arrow-wrap arrow-prev-wrap"
       v-scroll-to="{
-        el: `#day-${+currentScrollDay.id - 30}`,
+        el: `#day-${+dayOnCurrentScroll.id - 30}`,
         container: '.wrapper',
         x: true,
         y: false
@@ -12,13 +12,13 @@
       <div class="arrow-for-month arrow-prev-month"></div>
     </div>
     <h2 class="title-month-year">
-      <span class="title-month">{{currentScrollDay.month}} </span>
-      <span class="title-year">{{currentScrollDay.year}}</span>
+      <span class="title-month">{{dayOnCurrentScroll.month}} </span>
+      <span class="title-year">{{dayOnCurrentScroll.year}}</span>
     </h2>
     <div
       class="arrow-wrap arrow-next-wrap"
       v-scroll-to="{
-        el: `#day-${+currentScrollDay.id + 30}`,
+        el: `#day-${+dayOnCurrentScroll.id + 30}`,
         container: '.wrapper',
         x: true,
         y: false
@@ -34,7 +34,7 @@ import VueScrollTo from 'vue-scrollto';
 
 export default {
   props: {
-    currentScrollDay: Object,
+    dayOnCurrentScroll: Object,
   },
   directives: {
     scrollTo: VueScrollTo,
