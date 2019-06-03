@@ -4,7 +4,7 @@
     <div class="wrapper">
       <div ref="days" class="days">
         <div
-          :id="'day-' + day.id"
+          :data-id="day.id"
           class="day"
           :class="{ 'current-day': day.dayPositionRelativeToCurrent == 0 }"
           v-for="day in days"
@@ -42,6 +42,7 @@ import { onScroll } from "../utils/derictives";
 export default {
   data() {
     return {
+      arrayDays: [],
       events: events,
       dayOnCurrentScroll: {},
     };
@@ -53,12 +54,19 @@ export default {
       const centerY = daysElement.offsetTop + daysElement.offsetHeight / 2;
       const middleDayElement = document.elementFromPoint(centerX, centerY);
       if (middleDayElement.parentNode.classList.contains("day")) {
-        const id = middleDayElement.parentNode.id.split('day-')[1]
+        const id = middleDayElement.parentNode.dataset.id
         this.dayOnCurrentScroll = this.days[id]
       }
     },
     isHoliday(day) {
       return day.dayOfWeek === 'сб' || day.dayOfWeek === 'вс'
+    },
+    addDaysToCalendar(year, month) {
+      const arr = getDaysOfMonth(year, month);
+      arrDays.push(...arr);
+      //arrDays.forEach((item, index) => item['id'] = index)
+
+      arrayDays
     }
   },
   mounted() {
@@ -70,16 +78,22 @@ export default {
     document.querySelector('.wrapper').scrollLeft = document.querySelector('.current-day').offsetLeft
   },
   computed: {
+    currentMonth() {
+      const date = new Date();
+      const year = date.getFullYear();
+      const month = date.getMonth();
+      return 
+    },
     days() {
-      const arrDays = [];
-      for (let yearNumber = 2019; yearNumber < 2020; yearNumber++) {
+      let arrDays = {};
+      for (let yearNumber = 2019; yearNumber < 2021; yearNumber++) {
         for (let monthNumber = 0; monthNumber < 12; monthNumber++) {
           const date = new Date(yearNumber, monthNumber, 1);
           const year = date.getFullYear();
           const month = date.getMonth();
           const arr = getDaysOfMonth(year, month);
-          arrDays.push(...arr);
-          arrDays.forEach((item, index) => item['id'] = index)
+          arrDays = { ...arrDays, ...arr }
+          //arrDays.forEach((item, index) => item['id'] = index)
         }
       }
       return arrDays;

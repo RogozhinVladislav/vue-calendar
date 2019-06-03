@@ -3,11 +3,11 @@
     <div
       class="arrow-wrap arrow-prev-wrap"
       v-scroll-to="{
-        el: `#day-${+dayOnCurrentScroll.id - 30}`,
+        el: `*[data-id='${formatId('subtract')}']`,
         container: '.wrapper',
         x: true,
         y: false
-    }"
+      }"
     >
       <div class="arrow-for-month arrow-prev-month"></div>
     </div>
@@ -18,7 +18,7 @@
     <div
       class="arrow-wrap arrow-next-wrap"
       v-scroll-to="{
-        el: `#day-${+dayOnCurrentScroll.id + 30}`,
+        el: `*[data-id='${formatId('add')}']`,
         container: '.wrapper',
         x: true,
         y: false
@@ -31,6 +31,7 @@
 
 <script>
 import VueScrollTo from 'vue-scrollto';
+import moment from 'moment'
 
 export default {
   props: {
@@ -39,6 +40,14 @@ export default {
   directives: {
     scrollTo: VueScrollTo,
   },
+  methods: {
+    formatId(action) {
+      return moment(this.dayOnCurrentScroll.id, 'YYYY-M-D')[action](1, 'months').format('YYYY-M-D')
+    }
+  },
+  computed: {
+
+  }
 };
 </script>
 

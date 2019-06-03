@@ -16,13 +16,24 @@ export const getDaysOfMonth = (year, month) => {
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
       if (k > 0 && k <= diff) {
-        table.push({
+
+        table[`${year}-${month + 1}-${k}`] = {
+          id: `${year}-${month + 1}-${k}`,
           number: k,
           dayOfWeek: weekNames[j],
           month: monthNames[month],
           year,
           dayPositionRelativeToCurrent: moment([year, month, k]).diff(moment().startOf('day'), 'days'),
-        });
+        };
+
+        // table.push({
+        //   id: `${year}-${month + 1}-${k}`,
+        //   number: k,
+        //   dayOfWeek: weekNames[j],
+        //   month: monthNames[month],
+        //   year,
+        //   dayPositionRelativeToCurrent: moment([year, month, k]).diff(moment().startOf('day'), 'days'),
+        // });
       }
       k++;
     }
