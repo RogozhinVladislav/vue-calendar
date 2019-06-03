@@ -1,44 +1,47 @@
 <template>
   <div>
-    <v-btn
-      absolute
-      dark
-      fab
-      color="pink"
-      class="event-add-btn"
-      v-show="!showButtons"
-      @click="showButtons = !showButtons"
-    >
-      <v-icon>add</v-icon>
-    </v-btn>
+    <div class="event-type-buttons-overlay" v-show="showButtons"></div>
+    <div class="button-container" v-on-clickaway="onClickAway">
+      <v-btn
+        absolute
+        dark
+        fab
+        color="pink"
+        class="event-add-btn"
+        v-show="!showButtons"
+        @click="showButtons = !showButtons"
+      >
+        <v-icon>add</v-icon>
+      </v-btn>
 
-    <div class="event-type-buttons" v-show="showButtons" v-on-clickaway="away">
-      <div class="event-type-btn-wrap">
-        <div class="event-type-btn-title">Перерыв</div>
-        <v-btn fab color="pink" class="event-type-btn">
-          <v-icon>access_time</v-icon>
-        </v-btn>
-      </div>
+      <div class="event-type-buttons" v-show="showButtons">
+        <div class="event-type-btn-wrap">
+          <div class="event-type-btn-title">Перерыв</div>
+          <v-btn fab class="event-type-btn">
+            <v-icon color="pink">access_time</v-icon>
+          </v-btn>
+        </div>
 
-      <div class="event-type-btn-wrap">
-        <div class="event-type-btn-title">Отгул</div>
-        <v-btn fab color="pink" class="event-type-btn">
-          <v-icon>calendar_today</v-icon>
-        </v-btn>
-      </div>
+        <div class="event-type-btn-wrap">
+          <div class="event-type-btn-title">Отгул</div>
+          <v-btn fab class="event-type-btn">
+            <v-icon color="pink">calendar_today</v-icon>
+          </v-btn>
+        </div>
 
-      <div class="event-type-btn-wrap">
-        <div class="event-type-btn-title">Заболел</div>
-        <v-btn fab color="pink" class="event-type-btn">
-          <v-icon>calendar_today</v-icon>
-        </v-btn>
-      </div>
+        <div class="event-type-btn-wrap">
+          <div class="event-type-btn-title">Заболел</div>
+          <v-btn fab class="event-type-btn">
+            <v-icon color="pink">calendar_today</v-icon>
+          </v-btn>
+        </div>
 
-      <div class="event-type-btn-wrap">
-        <div class="event-type-btn-title">В отпуск</div>
-        <v-btn fab color="pink" class="event-type-btn">
-          <v-icon>calendar_today</v-icon>
-        </v-btn>
+        <div class="event-type-btn-wrap">
+          <div class="event-type-btn-title">В отпуск</div>
+          <v-btn fab class="event-type-btn">
+            <v-icon color="pink">calendar_today</v-icon>
+          </v-btn>
+        </div>
       </div>
     </div>
   </div>
@@ -54,13 +57,11 @@ export default {
         }
     },
     methods: {
-    away: function() {
-        
+      onClickAway: function() {
         if (this.showButtons) {
-            console.log('hi')
             this.showButtons = !this.showButtons
         }
-    },
+      },
   },
 };
 </script>
@@ -75,12 +76,23 @@ export default {
   position: absolute;
   bottom: 1px;
   right: 0;
+  z-index: 2;
+}
+
+.event-type-buttons-overlay {
+  position: absolute;
+  background-color: #fff;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.9;
 }
 
 .event-type-btn-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .event-type-btn-title {
