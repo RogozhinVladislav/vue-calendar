@@ -1,14 +1,14 @@
 <template>
   <div>
     <calendar-header :dayOnCurrentScroll="dayOnCurrentScroll" />
-    <div class="wrapper">
+    <div class="wrapper" ref="wrapper">
       <div ref="days" class="days">
         <div
           :data-id="day.id"
           class="day"
           :class="{ 'current-day': day.dayPositionRelativeToCurrent == 0 }"
-          v-for="day in days"
-          :key="day.number + day.month+day.year"
+          v-for="day in arrayDays"
+          :key="day.id"
         >
           <div class="inner-day day-name">{{day.dayOfWeek}}</div>
           <div class="inner-day day-number" :class="{ holiday: isHoliday(day) }" >{{day.number}}</div>
@@ -17,11 +17,11 @@
       <div class="events">
         <div class="events-row" v-for="event in events" :key="event.id">
           <event-cell
-            v-for="(day, index) in days"
-            :key="day.number + day.month+day.year"
+            v-for="(day, index) in arrayDays"
+            :key="day.id"
             :day="day"
-            :previousDay="days[index - 1]"
-            :nextDay="days[index + 1]"
+            :previousDay="arrayDays[index - 1]"
+            :nextDay="arrayDays[index + 1]"
             :event="event"
           ></event-cell>
           </div>
@@ -32,17 +32,21 @@
 </template>
 
 <script>
+import moment from 'moment'
+import _ from 'lodash'
+
 import CalendarHeader from '../components/CalendarHeader'
 import EventCell from '../components/EventCell'
 
 import { events, monthNames } from "../utils/constants";
 import { getDaysOfMonth } from "../utils/helpers";
 import { onScroll } from "../utils/derictives";
+import { setTimeout } from 'timers';
 
 export default {
   data() {
     return {
-      arrayDays: [],
+      arrayDays: {},
       events: events,
       dayOnCurrentScroll: {},
     };
@@ -55,49 +59,60 @@ export default {
       const middleDayElement = document.elementFromPoint(centerX, centerY);
       if (middleDayElement.parentNode.classList.contains("day")) {
         const id = middleDayElement.parentNode.dataset.id
-        this.dayOnCurrentScroll = this.days[id]
+        this.dayOnCurrentScroll = this.arrayDays[id]
       }
     },
     isHoliday(day) {
       return day.dayOfWeek === 'сб' || day.dayOfWeek === 'вс'
     },
-    addDaysToCalendar(year, month) {
-      const arr = getDaysOfMonth(year, month);
-      arrDays.push(...arr);
-      //arrDays.forEach((item, index) => item['id'] = index)
+    addDaysToCalendar(year, month, pos) {
+      const arrDaysOfMonth = getDaysOfMonth(year, month);
+      if (pos === 'after') {
+        this.arrayDays = { ...this.arrayDays, ...arrDaysOfMonth }
+      } else if (pos === 'before') {
+        this.arrayDays = { ...arrDaysOfMonth , ...this.arrayDays }
+      }
+    },
+    triggerAddDaysToCalendar(action) {
+      const nextDate = moment(this.dayOnCurrentScroll.id, 'YYYY-M-D').startOf('month')[action](1, 'months')
+      if (!this.arrayDays[nextDate.format('YYYY-M-D')]) {
+        this.addDaysToCalendar(nextDate.year(), nextDate.month(), action === 'add' ? 'after' : 'before')
 
-      arrayDays
+        // this.$nextTick(function () {
+        //   this.$refs.wrapper.scrollLeft = document.querySelector(`*[data-id='${moment(this.dayOnCurrentScroll.id).format('YYYY-M-D')}]`).offsetLeft
+        // })
+      }
     }
   },
   mounted() {
-    this.getMonthFromMiddleElement();
-    document.querySelector(".wrapper").addEventListener("scroll", () => {
-      this.getMonthFromMiddleElement();
-    });
 
-    document.querySelector('.wrapper').scrollLeft = document.querySelector('.current-day').offsetLeft
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth();
+
+    this.addDaysToCalendar(year, month - 1, 'after')
+    this.addDaysToCalendar(year, month, 'after')
+    this.addDaysToCalendar(year, month + 1, 'after')
+
+    this.$nextTick(() => {
+      this.$refs.wrapper.addEventListener("scroll", _.throttle(() => {
+        this.getMonthFromMiddleElement();
+      }, 100));
+      this.$refs.wrapper.scrollLeft = document.querySelector('.current-day').offsetLeft
+    })
+  },
+  watch: {
+    dayOnCurrentScroll(newVal, oldVal) {
+      if (newVal.monthNumber >  oldVal.monthNumber) {
+        this.triggerAddDaysToCalendar('add')
+      }
+      if (newVal.monthNumber <  oldVal.monthNumber) {
+        this.triggerAddDaysToCalendar('subtract')
+      }
+    }
   },
   computed: {
-    currentMonth() {
-      const date = new Date();
-      const year = date.getFullYear();
-      const month = date.getMonth();
-      return 
-    },
-    days() {
-      let arrDays = {};
-      for (let yearNumber = 2019; yearNumber < 2021; yearNumber++) {
-        for (let monthNumber = 0; monthNumber < 12; monthNumber++) {
-          const date = new Date(yearNumber, monthNumber, 1);
-          const year = date.getFullYear();
-          const month = date.getMonth();
-          const arr = getDaysOfMonth(year, month);
-          arrDays = { ...arrDays, ...arr }
-          //arrDays.forEach((item, index) => item['id'] = index)
-        }
-      }
-      return arrDays;
-    }
+
   },
   directives: {
     onScroll
@@ -110,8 +125,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .wrapper {
   overflow-x: auto;
+  //overflow-anchor: auto;
 }
 
 .days {
