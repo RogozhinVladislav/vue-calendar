@@ -31,7 +31,7 @@
 
 <script>
 import VueScrollTo from 'vue-scrollto';
-import moment from 'moment'
+import moment from 'moment';
 
 export default {
   props: {
@@ -42,12 +42,12 @@ export default {
   },
   methods: {
     formatId(action) {
-      return moment(this.dayOnCurrentScroll.id, 'YYYY-M-D')[action](1, 'months').format('YYYY-M-D')
-    }
+      return moment(this.dayOnCurrentScroll.id, 'YYYY-M-D')[action](1, 'months').format('YYYY-M-D');
+    },
   },
   computed: {
 
-  }
+  },
 };
 </script>
 

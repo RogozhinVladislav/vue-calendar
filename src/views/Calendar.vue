@@ -32,22 +32,22 @@
 </template>
 
 <script>
-import moment from 'moment'
-import _ from 'lodash'
+import moment from 'moment';
+import _ from 'lodash';
 
-import CalendarHeader from '../components/CalendarHeader'
-import EventCell from '../components/EventCell'
-
-import { events, monthNames } from "../utils/constants";
-import { getDaysOfMonth } from "../utils/helpers";
-import { onScroll } from "../utils/derictives";
 import { setTimeout } from 'timers';
+import CalendarHeader from '../components/CalendarHeader';
+import EventCell from '../components/EventCell';
+
+import { events, monthNames } from '../utils/constants';
+import { getDaysOfMonth } from '../utils/helpers';
+import { onScroll } from '../utils/derictives';
 
 export default {
   data() {
     return {
       arrayDays: {},
-      events: events,
+      events,
       dayOnCurrentScroll: {},
     };
   },
@@ -57,70 +57,69 @@ export default {
       const centerX = daysElement.offsetLeft + daysElement.offsetWidth / 2;
       const centerY = daysElement.offsetTop + daysElement.offsetHeight / 2;
       const middleDayElement = document.elementFromPoint(centerX, centerY);
-      if (middleDayElement.parentNode.classList.contains("day")) {
-        const id = middleDayElement.parentNode.dataset.id
-        this.dayOnCurrentScroll = this.arrayDays[id]
+      if (middleDayElement.parentNode.classList.contains('day')) {
+        const { id } = middleDayElement.parentNode.dataset;
+        this.dayOnCurrentScroll = this.arrayDays[id];
       }
     },
     isHoliday(day) {
-      return day.dayOfWeek === 'сб' || day.dayOfWeek === 'вс'
+      return day.dayOfWeek === 'сб' || day.dayOfWeek === 'вс';
     },
     addDaysToCalendar(year, month, pos) {
       const arrDaysOfMonth = getDaysOfMonth(year, month);
       if (pos === 'after') {
-        this.arrayDays = { ...this.arrayDays, ...arrDaysOfMonth }
+        this.arrayDays = { ...this.arrayDays, ...arrDaysOfMonth };
       } else if (pos === 'before') {
-        this.arrayDays = { ...arrDaysOfMonth , ...this.arrayDays }
+        this.arrayDays = { ...arrDaysOfMonth, ...this.arrayDays };
       }
     },
     triggerAddDaysToCalendar(action) {
-      const nextDate = moment(this.dayOnCurrentScroll.id, 'YYYY-M-D').startOf('month')[action](1, 'months')
+      const nextDate = moment(this.dayOnCurrentScroll.id, 'YYYY-M-D').startOf('month')[action](1, 'months');
       if (!this.arrayDays[nextDate.format('YYYY-M-D')]) {
-        this.addDaysToCalendar(nextDate.year(), nextDate.month(), action === 'add' ? 'after' : 'before')
+        this.addDaysToCalendar(nextDate.year(), nextDate.month(), action === 'add' ? 'after' : 'before');
 
         // this.$nextTick(function () {
         //   this.$refs.wrapper.scrollLeft = document.querySelector(`*[data-id='${moment(this.dayOnCurrentScroll.id).format('YYYY-M-D')}]`).offsetLeft
         // })
       }
-    }
+    },
   },
   mounted() {
-
     const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth();
 
-    this.addDaysToCalendar(year, month - 1, 'after')
-    this.addDaysToCalendar(year, month, 'after')
-    this.addDaysToCalendar(year, month + 1, 'after')
+    this.addDaysToCalendar(year, month - 1, 'after');
+    this.addDaysToCalendar(year, month, 'after');
+    this.addDaysToCalendar(year, month + 1, 'after');
 
     this.$nextTick(() => {
-      this.$refs.wrapper.addEventListener("scroll", _.throttle(() => {
+      this.$refs.wrapper.addEventListener('scroll', _.throttle(() => {
         this.getMonthFromMiddleElement();
       }, 100));
-      this.$refs.wrapper.scrollLeft = document.querySelector('.current-day').offsetLeft
-    })
+      this.$refs.wrapper.scrollLeft = document.querySelector('.current-day').offsetLeft;
+    });
   },
   watch: {
     dayOnCurrentScroll(newVal, oldVal) {
-      if (newVal.monthNumber >  oldVal.monthNumber) {
-        this.triggerAddDaysToCalendar('add')
+      if (newVal.monthNumber > oldVal.monthNumber) {
+        this.triggerAddDaysToCalendar('add');
       }
-      if (newVal.monthNumber <  oldVal.monthNumber) {
-        this.triggerAddDaysToCalendar('subtract')
+      if (newVal.monthNumber < oldVal.monthNumber) {
+        this.triggerAddDaysToCalendar('subtract');
       }
-    }
+    },
   },
   computed: {
 
   },
   directives: {
-    onScroll
+    onScroll,
   },
   components: {
     CalendarHeader,
-    EventCell
-  }
+    EventCell,
+  },
 };
 </script>
 

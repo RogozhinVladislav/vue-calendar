@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { events, monthNames } from "../utils/constants";
+import { events, monthNames } from '../utils/constants';
 
 export default {
   props: {
@@ -21,9 +21,9 @@ export default {
   },
   data() {
     return {
-      monthNames
+      monthNames,
     };
-  }
+  },
 };
 </script>
 
