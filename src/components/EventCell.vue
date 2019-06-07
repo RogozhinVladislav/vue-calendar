@@ -2,7 +2,7 @@
   <div
     class="event-cell"
     :class="{
-        'event-cell-fill': event.dates.find(date => { return date.day == day.number && monthNames[date.month - 1] == day.month && date.year == day.year }),
+        //'event-cell-fill': event.dates.find(date => { return date.day == day.number && monthNames[date.month - 1] == day.month && date.year == day.year }),
         'event-cell-holiday': day.dayOfWeek == 'сб' || day.dayOfWeek == 'вс',
         //'event-cell-left-edge': !event.dates.find(date => { return date.day == previousDay.number && monthNames[date.month - 1] == previousDay.month && date.year == previousDay.year })
     }"
@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { events, monthNames } from "../utils/constants";
+import { events, monthNames } from '../utils/constants';
 
 export default {
   props: {
@@ -21,9 +21,9 @@ export default {
   },
   data() {
     return {
-      monthNames
+      monthNames,
     };
-  }
+  },
 };
 </script>
 
