@@ -15,33 +15,34 @@
       </v-btn>
 
       <div class="event-type-buttons" v-show="showButtons">
-        <div class="event-type-btn-wrap">
+
+        <router-link to="/add-event/Перерыв" class="event-type-btn-wrap" tag="div">
           <div class="event-type-btn-title">Перерыв</div>
           <v-btn fab class="event-type-btn">
             <v-icon color="pink">access_time</v-icon>
           </v-btn>
-        </div>
+        </router-link>
 
-        <div class="event-type-btn-wrap">
+        <router-link to="/add-event/Отгул" class="event-type-btn-wrap" tag="div">
           <div class="event-type-btn-title">Отгул</div>
           <v-btn fab class="event-type-btn">
             <v-icon color="pink">calendar_today</v-icon>
           </v-btn>
-        </div>
+        </router-link>
 
-        <div class="event-type-btn-wrap">
+        <router-link to="/add-event/Заболел" class="event-type-btn-wrap" tag="div">
           <div class="event-type-btn-title">Заболел</div>
           <v-btn fab class="event-type-btn">
             <v-icon color="pink">calendar_today</v-icon>
           </v-btn>
-        </div>
+        </router-link>
 
-        <div class="event-type-btn-wrap">
+        <router-link to="/add-event/Отпуск" class="event-type-btn-wrap" tag="div">
           <div class="event-type-btn-title">В отпуск</div>
           <v-btn fab class="event-type-btn">
             <v-icon color="pink">calendar_today</v-icon>
           </v-btn>
-        </div>
+        </router-link>
       </div>
     </div>
   </div>
