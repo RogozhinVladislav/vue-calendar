@@ -10,15 +10,15 @@
             <v-text-field v-model="eventName" label="Название события" required></v-text-field>
             <div :v-if="$route.params.type !== 'Отпуск'" class="all-day-container">
               <div>Весь день</div>
-              <v-switch v-model="allDay" class="all-day-switcher"></v-switch>
+              <v-switch :value="allDay" @change="onSwitch" class="all-day-switcher"></v-switch>
             </div>
             <div>
-              <div class="date-line">
-                <div class="start-date" @click="onClickDateLine('start')">{{startDate}}</div>
+              <div class="date-line" :class="{ 'line-disabled': allDay }">
+                <div class="start-date" @click="onClickDateLine('start')">{{startDate | formatDate}}</div>
                 <div class="start-time" @click="onClickTimeLine('start')">{{startTime}}</div>
               </div>
-              <div class="date-line">
-                <div class="finish-date" @click="onClickDateLine('finish')">{{finishDate}}</div>
+              <div class="date-line" :class="{ 'line-disabled': allDay }">
+                <div class="finish-date" @click="onClickDateLine('finish')">{{finishDate | formatDate}}</div>
                 <div class="finish-time" @click="onClickTimeLine('finish')">{{finishTime}}</div>
               </div>
             </div>
@@ -36,7 +36,7 @@
 
           <div class="add-event-overlay" v-show="showDatePicker">
             <div class="event-datepicker-wrap">
-              <v-date-picker :value="activeDate" @input="onInputDatePicker" class="event-datepicker elevation-0"></v-date-picker>
+              <v-date-picker :header-date-format="dateFormat" header-color="white" :value="activeDate" @input="onInputDatePicker" class="event-datepicker elevation-0"></v-date-picker>
               <div>
                 <v-btn flat @click="showDatePicker = false">Отмена</v-btn>
                 <v-btn flat>Ок</v-btn>
@@ -62,6 +62,7 @@
 <script>
 
 import moment from 'moment'
+import { capitalize } from '@/utils/helpers'
 
 export default {
   data() {
@@ -81,6 +82,20 @@ export default {
     };
   },
   methods: {
+    dateFormat(date, locale) {
+      return capitalize(moment(date).format('MMMM YYYY'))
+    },
+    onSwitch(e) {
+      console.log('e', e)
+      this.allDay = e;
+      if (e) {
+        this.startTime = '0:00';
+        this.finishTime = '23:59';
+      } else {
+        this.startTime = '9:00';
+        this.finishTime = '12:00';
+      }
+    },
     onClickDateLine(dateline) {
       this.activeDatePicker = dateline;
       this.showDatePicker = true;
@@ -94,7 +109,7 @@ export default {
     },
     onInputTimePicker(e) {
       this.activeTimePicker === 'start' ? this.startTime = e : this.finishTime = e;
-    }
+    },
   },
   computed: {
     activeDate() {
@@ -104,12 +119,15 @@ export default {
       return this.activeTimePicker === 'start' ? this.startTime : this.finishTime;
     },
   },
+  filters: {
+    formatDate(date) {
+      const formatDate = moment(date).format('ddd[,] D MMMM YYYY г.');
+      return capitalize(formatDate)
+    }
+  },
   mounted() {
-    console.log('time', moment().format('YYYY-MM-DD'))
-    //this.startDate: '2019-06-05',
-    // startTime: '09:00',
-    // finishDate: '2019-06-05',
-    // finishTime: '12:00',
+    this.startDate = moment().format('YYYY-MM-DD');
+    this.finishDate = moment().format('YYYY-MM-DD');
   }
 };
 </script>
@@ -177,6 +195,11 @@ export default {
     &:last-child {
       margin-bottom: 0;
     }
+
+    &.line-disabled {
+      color: #9e9e9e;
+      pointer-events: none;
+    }
   }
 
   .add-event-overlay {
@@ -197,7 +220,10 @@ export default {
   }
 
   .event-datepicker {
-    
+
+    .v-picker__title {
+      color: #000;
+    }
   }
 }
 </style>

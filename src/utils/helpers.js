@@ -34,3 +34,5 @@ export const getDaysOfMonth = (year, month) => {
 };
 
 export const isHoliday = day => day.dayOfWeek === 'сб' || day.dayOfWeek === 'вс';
+
+export const capitalize = value => value.charAt(0).toUpperCase() + value.slice(1);
