@@ -6,7 +6,7 @@
         absolute
         dark
         fab
-        color="pink"
+        color="accent"
         class="event-add-btn"
         v-show="!showButtons"
         @click="showButtons = !showButtons"
@@ -18,28 +18,28 @@
         <div class="event-type-btn-wrap">
           <div class="event-type-btn-title">Перерыв</div>
           <v-btn fab class="event-type-btn">
-            <v-icon color="pink">access_time</v-icon>
+            <icon-base icon-name="clock" width="23" height="23" iconColor="#ed1c24"><icon-clock /></icon-base>
           </v-btn>
         </div>
 
         <div class="event-type-btn-wrap">
           <div class="event-type-btn-title">Отгул</div>
           <v-btn fab class="event-type-btn">
-            <v-icon color="pink">calendar_today</v-icon>
+            <icon-base icon-name="calendar" width="24" height="25" iconColor="#ed1c24"><icon-calendar /></icon-base>
           </v-btn>
         </div>
 
         <div class="event-type-btn-wrap">
           <div class="event-type-btn-title">Заболел</div>
           <v-btn fab class="event-type-btn">
-            <v-icon color="pink">calendar_today</v-icon>
+            <icon-base icon-name="bottle" width="17" height="26" iconColor="#ed1c24"><icon-bottle /></icon-base>
           </v-btn>
         </div>
 
         <div class="event-type-btn-wrap">
           <div class="event-type-btn-title">В отпуск</div>
           <v-btn fab class="event-type-btn">
-            <v-icon color="pink">calendar_today</v-icon>
+            <icon-base icon-name="sun" width="29" height="29" iconColor="#ed1c24"><icon-sun /></icon-base>
           </v-btn>
         </div>
       </div>
@@ -48,7 +48,15 @@
 </template>
 
 <script>
+
 import { mixin as clickaway } from 'vue-clickaway';
+import IconBase from './IconBase.vue'
+
+import IconCalendar from './icons/IconCalendar.vue'
+import IconClock from './icons/IconClock.vue'
+import IconBottle from './icons/IconBottle.vue'
+import IconSun from './icons/IconSun.vue'
+
 export default {
     mixins: [ clickaway ],
     data() {
@@ -63,6 +71,13 @@ export default {
         }
       },
   },
+  components: {
+    IconBase,
+    IconClock,
+    IconCalendar,
+    IconBottle,
+    IconSun
+  }
 };
 </script>
 
