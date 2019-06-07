@@ -2,17 +2,27 @@
   <header class="header-calendar">
     <div
       class="arrow-wrap arrow-prev-wrap"
-      v-scroll-to="toScrollObject(formatId(currentScrollDay.id, '-', 30))"
+      v-scroll-to="{
+        el: `*[data-id='${formatId('subtract')}']`,
+        container: '.wrapper',
+        x: true,
+        y: false
+      }"
     >
       <div class="arrow-for-month arrow-prev-month"></div>
     </div>
     <h2 class="title-month-year">
-      <span class="title-month">{{currentScrollDay.month}}</span>
-      <span class="title-year">{{currentScrollDay.year}}</span>
+      <span class="title-month">{{dayOnCurrentScroll.month}} </span>
+      <span class="title-year">{{dayOnCurrentScroll.year}}</span>
     </h2>
     <div
       class="arrow-wrap arrow-next-wrap"
-      v-scroll-to.prop="toScrollObject(formatId(currentScrollDay.id, '+', 30))"
+      v-scroll-to="{
+        el: `*[data-id='${formatId('add')}']`,
+        container: '.wrapper',
+        x: true,
+        y: false
+    }"
     >
       <div class="arrow-for-month arrow-next-month"></div>
     </div>
@@ -20,42 +30,24 @@
 </template>
 
 <script>
-import VueScrollTo from "vue-scrollto";
+import VueScrollTo from 'vue-scrollto';
+import moment from 'moment';
 
 export default {
   props: {
-    currentScrollDay: Object
+    dayOnCurrentScroll: Object,
   },
   directives: {
     scrollTo: VueScrollTo
   },
   methods: {
-    formatId(rawId, operation, days) {
-      rawId = +rawId;
-      days = days || 30;
-      switch (operation) {
-        case "+":
-          return `#day-${rawId + days}`;
-          break;
-        case "-":
-          return `#day-${rawId - days}`;
-          break;
-        default:
-          return `#day-${rawId}`;
-      }
+    formatId(action) {
+      return moment(this.dayOnCurrentScroll.id, 'YYYY-M-D')[action](1, 'months').format('YYYY-M-D');
     },
-    toScrollObject(id) {
-      return {
-        el: id,
-        container: ".wrapper",
-        x: true,
-        y: false
-      };
-    }
   },
-  filters: {
+  computed: {
 
-  }
+  },
 };
 </script>
 
