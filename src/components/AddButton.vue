@@ -66,7 +66,7 @@ export default {
         }
     },
     methods: {
-      onClickAway: function() {
+      onClickAway() {
         if (this.showButtons) {
             this.showButtons = !this.showButtons
         }
