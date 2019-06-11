@@ -27,6 +27,9 @@
           </div>
         </div>
       </div>
+
+      <AddButton />
+
     </div>
   </div>
 </template>
@@ -38,6 +41,7 @@ import _ from 'lodash';
 import { setTimeout } from 'timers';
 import CalendarHeader from '../components/CalendarHeader';
 import EventCell from '../components/EventCell';
+import AddButton from '../components/AddButton'
 
 import { events, monthNames } from '../utils/constants';
 import { getDaysOfMonth } from '../utils/helpers';
@@ -119,6 +123,7 @@ export default {
   components: {
     CalendarHeader,
     EventCell,
+    AddButton,
   },
 };
 </script>
