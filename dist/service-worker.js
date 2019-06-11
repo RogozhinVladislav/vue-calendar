@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.6ac7bb580217721aae62698c590d8b46.js"
+  "/precache-manifest.03eeae5c436155c55a286a0df8d97857.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "crm-calendar"});
