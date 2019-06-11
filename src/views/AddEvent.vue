@@ -88,8 +88,8 @@ export default {
       allDay: false,
       showDatePicker: false,
       showTimePicker: false,
-      datePickerValue: null,
-      timePickerValue: null,
+      datePickerValue: moment().format("YYYY-MM-DD"),
+      timePickerValue: "09:00",
       startDate: moment().format("YYYY-MM-DD"),
       startTime: "09:00",
       finishDate: moment().format("YYYY-MM-DD"),
@@ -108,11 +108,11 @@ export default {
       return capitalize(formatDate);
     },
     onSwitch(payload) {
-      console.log("e", payload);
       this.allDay = payload;
       if (payload) {
         this.startTime = "0:00";
         this.finishTime = "23:59";
+        this.finishDate = this.startDate;
       } else {
         this.startTime = "9:00";
         this.finishTime = "12:00";

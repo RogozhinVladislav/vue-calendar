@@ -16,3 +16,18 @@
     margin-top: 23px;
     padding: 0 40px;
 }
+
+.theme--light.v-text-field>.v-input__control>.v-input__slot {
+
+    .v-label {
+        color: #9e9e9e;
+    }
+
+    &:before {
+        border-color: #e0e0e0;
+    }
+}
+
+.theme--light.v-text-field:not(.v-input--has-state)>.v-input__control>.v-input__slot:hover:before {
+    border-color: #e0e0e0;
+}
