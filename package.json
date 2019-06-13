@@ -6,10 +6,13 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "deploy": "git subtree push --prefix dist heroku master"
+    "deploy": "git subtree push --prefix dist heroku master",
+    "start": "node server.js",
+    "heroku-postbuild": "npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "express": "^4.17.1",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "register-service-worker": "^1.6.2",
