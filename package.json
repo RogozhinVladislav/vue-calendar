@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "start": "node server.js"
+    "start": "node server.js",
+    "postinstall": "npm install && npm build"
   },
   "dependencies": {
     "core-js": "^2.6.5",
@@ -36,5 +37,8 @@
     "node-sass": "^4.9.0",
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.6.10"
+  },
+  "engines": {
+    "node": "10.x"
   }
 }
