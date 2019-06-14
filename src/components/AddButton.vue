@@ -15,33 +15,34 @@
       </v-btn>
 
       <div class="event-type-buttons" v-show="showButtons">
-        <div class="event-type-btn-wrap">
+
+        <router-link to="/add-event/Перерыв" class="event-type-btn-wrap" tag="div">
           <div class="event-type-btn-title">Перерыв</div>
           <v-btn fab class="event-type-btn">
             <icon-base icon-name="clock" width="23" height="23" iconColor="#ed1c24"><icon-clock /></icon-base>
           </v-btn>
-        </div>
+        </router-link>
 
-        <div class="event-type-btn-wrap">
+        <router-link to="/add-event/Отгул" class="event-type-btn-wrap" tag="div">
           <div class="event-type-btn-title">Отгул</div>
           <v-btn fab class="event-type-btn">
             <icon-base icon-name="calendar" width="24" height="25" iconColor="#ed1c24"><icon-calendar /></icon-base>
           </v-btn>
-        </div>
+        </router-link>
 
-        <div class="event-type-btn-wrap">
+        <router-link to="/add-event/Заболел" class="event-type-btn-wrap" tag="div">
           <div class="event-type-btn-title">Заболел</div>
           <v-btn fab class="event-type-btn">
             <icon-base icon-name="bottle" width="17" height="26" iconColor="#ed1c24"><icon-bottle /></icon-base>
           </v-btn>
-        </div>
+        </router-link>
 
-        <div class="event-type-btn-wrap">
+        <router-link to="/add-event/Отпуск" class="event-type-btn-wrap" tag="div">
           <div class="event-type-btn-title">В отпуск</div>
           <v-btn fab class="event-type-btn">
             <icon-base icon-name="sun" width="29" height="29" iconColor="#ed1c24"><icon-sun /></icon-base>
           </v-btn>
-        </div>
+        </router-link>
       </div>
     </div>
   </div>
@@ -65,7 +66,7 @@ export default {
         }
     },
     methods: {
-      onClickAway: function() {
+      onClickAway() {
         if (this.showButtons) {
             this.showButtons = !this.showButtons
         }
