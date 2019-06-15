@@ -21,7 +21,7 @@ export const getDaysOfMonth = (year, month) => {
           number: k,
           dayOfWeek: weekNames[j],
           month: monthNames[month],
-          monthNumber: month,
+          monthNumber: month + 1,
           year,
           dayPositionRelativeToCurrent: moment([year, month, k]).diff(moment().startOf('day'), 'days'),
         };

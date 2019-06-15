@@ -2,10 +2,10 @@
   <div
     class="event-cell"
     :class="{
-        //'event-cell-fill': event.dates.find(date => { return date.day == day.number && monthNames[date.month - 1] == day.month && date.year == day.year }),
         'event-cell-holiday': day.dayOfWeek == 'сб' || day.dayOfWeek == 'вс',
         //'event-cell-left-edge': !event.dates.find(date => { return date.day == previousDay.number && monthNames[date.month - 1] == previousDay.month && date.year == previousDay.year })
     }"
+    :style="isFill()"
   ></div>
 </template>
 
@@ -14,7 +14,7 @@ import { events, monthNames } from '../utils/constants';
 
 export default {
   props: {
-    event: Object,
+    eventRow: Array,
     day: Object,
     previousDay: Object,
     nextDay: Object,
@@ -24,6 +24,25 @@ export default {
       monthNames,
     };
   },
+  methods: {
+    isFill() {
+      //event.dates.find(date => { return date.day == day.number && monthNames[date.month - 1] == day.month && date.year == day.year }),
+      
+      const { day } = this
+
+      let flag = {}
+
+      this.eventRow.forEach(event => {
+        //if (day.monthNumber >= event.startDate.month && day.monthNumber <= event.finishDate.month) {
+          if (day.number >= event.startDate.day && day.number <= event.finishDate.day) {
+            flag = { 'background-color': event.color }
+          }
+        //}
+      });
+
+      return flag
+    }
+  }
 };
 </script>
 
@@ -34,7 +53,7 @@ export default {
   border-right: 1px solid #e7e7e7;
 
   &.event-cell-fill {
-    background-color: #c6e4cb;
+    background-color: #c6e4cb!important;
 
     &.event-cell-left-edge {
         border-radius: 3px 0 0 3px;

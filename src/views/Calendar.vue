@@ -15,7 +15,7 @@
         </div>
       </div>
       <div class="events">
-        <div class="events-row" v-for="event in events" :key="event.id">
+        <!-- <div class="events-row" v-for="event in events" :key="event.id">
           <event-cell
             v-for="(day, index) in arrayDays"
             :key="day.id"
@@ -23,6 +23,18 @@
             :previousDay="arrayDays[index - 1]"
             :nextDay="arrayDays[index + 1]"
             :event="event"
+          ></event-cell>
+          </div>
+        </div> -->
+
+        <div class="events-row" v-for="(row, rowIndex) in sortArr" :key="rowIndex">
+          <event-cell
+            v-for="(day, index) in arrayDays"
+            :key="day.id"
+            :day="day"
+            :previousDay="arrayDays[index - 1]"
+            :nextDay="arrayDays[index + 1]"
+            :eventRow="row"
           ></event-cell>
           </div>
         </div>
@@ -51,6 +63,7 @@ export default {
   data() {
     return {
       arrayDays: {},
+      sortArr: [],
       events,
       dayOnCurrentScroll: {},
     };
@@ -103,6 +116,58 @@ export default {
       }, 100));
       this.$refs.wrapper.scrollLeft = document.querySelector('.current-day').offsetLeft;
     });
+
+
+
+   
+
+    const { arrayDays, events } = this
+
+    let arrEvt = [...events]
+    //events.sort()
+
+    let ar = []
+
+    while (arrEvt.length > 0) {
+      console.log('arrEvt.length', arrEvt.length)
+      let row = []
+      Object.keys(arrayDays).forEach(dayIndex => {
+        const day = arrayDays[dayIndex]
+        arrEvt.forEach(event => {
+      
+          if (day.number == event.startDate.day) {
+            console.log('hi')
+
+            if (row.length == 0) {
+              row.push(event)
+              arrEvt = arrEvt.filter(e => e.id != event.id)
+            } else {
+              if (row[row.length - 1].finishDate.day < event.startDate.day) {
+                row.push(event)
+                console.log('row', row)
+                arrEvt = arrEvt.filter(e => e.id != event.id)
+              }
+              // row.forEach(rowEvent => {
+              //   if (rowEvent.finishDate.day < event.startDate.day) {
+              //     row.push(event)
+              //     console.log('row', row)
+              //     arrEvt = arrEvt.filter(e => e.id != event.id)
+              //   }
+              // })
+            }
+
+          }
+          
+        })
+      })
+      ar.push(row)
+    }
+
+    this.sortArr = [...ar]
+
+    console.log('ar', ar)
+    console.log('arrEvt', arrEvt)
+
   },
   watch: {
     dayOnCurrentScroll(newVal, oldVal) {
