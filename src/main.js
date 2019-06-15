@@ -11,21 +11,17 @@ import store from './store';
 import App from './App.vue';
 import './registerServiceWorker';
 
+import theme from './styles/theme';
+
 import 'reset-css/reset.css';
 import './styles/global.scss';
 
 Vue.config.productionTip = false;
 
 Vue.use(Vuetify, {
-  theme: {
-    // primary: '#ffffff',
-    // secondary: '#b0bec5',
-    accent: '#f44336',
-    error: '#b71c1c',
-  },
+  theme,
   lang: {
     locale: ru,
-    current: 'ru',
   },
 });
 
