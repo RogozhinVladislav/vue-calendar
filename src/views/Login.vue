@@ -17,6 +17,13 @@
         :rules="passwordRules"
         v-model="password"
       ></v-text-field>
+      <v-alert
+        :value="error"
+        type="error"
+        style="margin-bottom: 30px;"
+      >
+        {{error}}
+      </v-alert>
       <v-btn color="accent" @click="onSubmit" :disabled="!valid || loading" :loading="loading">Войти</v-btn>
     </v-form>
   </div>
@@ -30,19 +37,21 @@ export default {
       password: "",
       valid: false,
       emailRules: [
-        v => !!v || "E-mail is required",
-        v => /.+@.+/.test(v) || "Пожалуйста, введите Ваш email"
+        v => !!v || "Пожалуйста, введите Ваш email",
+        v => /.+@.+/.test(v) || "Пожалуйста, введите корректный email"
       ],
       passwordRules: [v => !!v || "Пожалуйста, введите Ваш пароль"]
     };
   },
-  computed: {
-    loading() {
-      return this.$store.getters.loading
-    }
-  },
   methods: {
     onSubmit() {
+      if (this.$refs.form.validate()) {
+          const user = {
+              email: this.email,
+              password: this.password
+          }
+          this.$store.dispatch('signin', user)
+      }
       // if (this.$refs.form.validate()) {
       //     const user = {
       //         email: this.email,
@@ -51,7 +60,15 @@ export default {
       //     this.$store.dispatch('signin', user)
       // }
     }
-  }
+  },
+  computed: {
+    loading() {
+      return this.$store.getters.loading
+    },
+    error() {
+      return this.$store.getters.error
+    }
+  },
 };
 </script>
 <style>
