@@ -15,7 +15,7 @@ export const monthNames = [
 
 export const weekNames = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
 
-export const events = [
+export const eventsMock = [
   {
     id: 4,
     name: 'Gena',
@@ -80,6 +80,21 @@ export const events = [
     id: 6,
     name: 'GalyA',
     color: 'yellow',
+    startDate: {
+      day: 16,
+      month: 6,
+      year: 2019,
+    },
+    finishDate: {
+      day: 18,
+      month: 6,
+      year: 2019,
+    },
+  },
+  {
+    id: 7,
+    name: 'Vitya',
+    color: 'black',
     startDate: {
       day: 16,
       month: 6,

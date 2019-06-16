@@ -55,7 +55,7 @@ import CalendarHeader from '../components/CalendarHeader';
 import EventCell from '../components/EventCell';
 import AddButton from '../components/AddButton'
 
-import { events, monthNames } from '../utils/constants';
+import { eventsMock, monthNames } from '../utils/constants';
 import { getDaysOfMonth } from '../utils/helpers';
 import { onScroll } from '../utils/derictives';
 
@@ -64,7 +64,7 @@ export default {
     return {
       arrayDays: {},
       sortArr: [],
-      events,
+      events: eventsMock,
       dayOnCurrentScroll: {},
     };
   },
@@ -116,57 +116,34 @@ export default {
       }, 100));
       this.$refs.wrapper.scrollLeft = document.querySelector('.current-day').offsetLeft;
     });
-
-
-
    
 
-    const { arrayDays, events } = this
+    const { arrayDays } = this
+    let { events } = this
 
-    let arrEvt = [...events]
     //events.sort()
 
-    let ar = []
-
-    while (arrEvt.length > 0) {
-      console.log('arrEvt.length', arrEvt.length)
+    while (events.length >= 1) {
       let row = []
       Object.keys(arrayDays).forEach(dayIndex => {
         const day = arrayDays[dayIndex]
-        arrEvt.forEach(event => {
-      
-          if (day.number == event.startDate.day) {
-            console.log('hi')
-
-            if (row.length == 0) {
+        events.forEach(event => {
+          if (day.number === event.startDate.day) {
+            if (row.length === 0) {
               row.push(event)
-              arrEvt = arrEvt.filter(e => e.id != event.id)
+              events = events.filter(e => e.id != event.id)
             } else {
               if (row[row.length - 1].finishDate.day < event.startDate.day) {
                 row.push(event)
-                console.log('row', row)
-                arrEvt = arrEvt.filter(e => e.id != event.id)
+                events = events.filter(e => e.id !== event.id)
               }
-              // row.forEach(rowEvent => {
-              //   if (rowEvent.finishDate.day < event.startDate.day) {
-              //     row.push(event)
-              //     console.log('row', row)
-              //     arrEvt = arrEvt.filter(e => e.id != event.id)
-              //   }
-              // })
             }
-
           }
-          
         })
       })
-      ar.push(row)
+      this.sortArr.push(row)
     }
-
-    this.sortArr = [...ar]
-
-    console.log('ar', ar)
-    console.log('arrEvt', arrEvt)
+    //this.sortArr = [...ar]
 
   },
   watch: {
