@@ -38,7 +38,7 @@ export default {
     dayOnCurrentScroll: Object,
   },
   directives: {
-    scrollTo: VueScrollTo,
+    scrollTo: VueScrollTo
   },
   methods: {
     formatId(action) {
@@ -88,11 +88,11 @@ export default {
   transform: rotate(45deg);
 }
 
-.arrow-prev-wrap{
+.arrow-prev-wrap {
   margin-right: 65px;
 }
 
-.arrow-next-wrap{
+.arrow-next-wrap {
   margin-left: 65px;
 }
 
